@@ -1,0 +1,94 @@
+1、基本介绍
+curl 是一个很强大的命令行工具，主要用于发送和解析网络请求，常规的命令格式如下：
+
+> curl [options...] <url>
+基本的用法很简单，难点在于怎样加入合适的参数，发送出一个符合自己预期的 “好” 请求
+
+下面我们主要来谈谈各个参数的含义和用法
+
+2、常用参数
+这里使用 http://www.httpbin.org 进行测试，这个网站可以返回所发送请求的相关信息，十分适合练习使用
+
+指定请求方法
+> curl -X <method> <url>
+> curl --request <method> <url>
+> # 发送 GET 请求
+> curl -X GET http://www.httpbin.org/get
+> # 发送 POST 请求
+> curl -X POST http://www.httpbin.org/post
+指定请求头
+> curl -H <header> <url>
+> curl --header <header> <url>
+> # 指定 User-Agent
+> curl -H "User-Agent: python-requests/2.20.1" http://www.httpbin.org/get
+> # 指定 Referer
+> curl -H "Referer: http://www.httpbin.org" http://www.httpbin.org/get
+指定 User-Agent 请求头
+> curl -A <agent> <url>
+> curl --user-agent <agent> <url>
+> # 修改 User-Agent
+> curl -A python-requests/2.20.1 http://www.httpbin.org/get
+指定 Referer 请求头
+> curl -e <referer> <url>
+> curl --referer <referer> <url>
+> # 修改 Referer
+> curl -e http://www.httpbin.org http://www.httpbin.org/get
+指定 Cookie
+> curl -b <data> <url>
+> curl --cookie <data> <url>
+> # 指定 cookie
+> curl -b "username=admin;password=12345" http://www.httpbin.org/cookies/set
+> # 在请求 cookies/set 的时候，网站会有一个重定向，所以我们可以加上 `-L` 参数跟随服务器重定向
+> curl -b "username=admin;password=12345" -L http://www.httpbin.org/cookies/set
+只显示响应头
+> curl -I <url>
+> curl --head <url>
+> # 只显示响应头
+> curl -I http://www.httpbin.org/get
+同时显示响应头和响应内容
+> curl -i <url>
+> curl --include <url>
+> # 同时显示响应头和响应内容
+> curl -i http://www.httpbin.org/get
+将响应头写入文件
+> curl -D <filename> <url>
+> curl --dump-header <filename> <url>
+> # 将响应头写入文件
+> curl -D headers.txt http://www.httpbin.org/get
+将响应内容写入文件，相当于 wget
+> curl -o <filename> <url>
+> curl --output <filename> <url>
+> # 将响应内容写入文件
+> curl -o content.txt http://www.httpbin.org/get
+发送表单数据，并使用 POST 请求方法
+> curl -d <data> <url>
+> curl --data <data> <url>
+> # 发送表单数据，并使用 POST 请求方法
+> curl -d "username=admin" -d "password=12345" http://www.httpbin.org/post
+将表单数据放在 URL 中发送，并使用 GET 请求方法
+> curl -G <url>
+> curl --get <url>
+> # 将表单数据放在 URL 中发送，并使用 GET 请求方法
+> curl -G -d "username=admin" -d "password=12345" http://www.httpbin.org/get
+显示详细信息
+> curl --verbose <url>
+> # 显示详细信息
+> curl --verbose http://www.httpbin.org/get
+显示完整过程，输出到指定的文件
+> curl --trace <filename> <url>
+> # 显示完整过程，输出到指定的文件
+> curl --trace trace.txt http://www.httpbin.org/get
+跳过 SSL 检测
+> curl -k <url>
+> curl --insecure <url>
+> # 跳过 SSL 检测
+> curl -k https://www.httpbin.org/get
+指定代理
+> curl -x <proxy> <url>
+> curl --proxy <proxy> <url>
+> # 指定代理
+> curl -x 127.0.0.1:8080 http://www.httpbin.org/get
+限制带宽，可以用于模拟慢速网络
+> curl --limit-rate <rate> <url>
+> # 限制带宽
+> curl --limit-rate 100k http://www.httpbin.org/get
